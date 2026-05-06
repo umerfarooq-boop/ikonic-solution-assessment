@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use OpenApi\Attributes as OA;
 
@@ -57,8 +58,9 @@ class CheckoutController extends Controller
         }
 
         $total = $cart->getTotal();
-
-        $order = Order::create([
+        DB::beginTransaction();
+        try {
+            $order = Order::create([
             'user_id' => $user->id,
             'total' => $total,
             'status' => 'pending',
@@ -82,13 +84,22 @@ class CheckoutController extends Controller
 
         $cart->status = 'checked_out';
         $cart->save();
-
+        DB::commit();
         $order->load('items');
 
         return response()->json([
             'message' => 'Order placed successfully',
             'order' => $order,
         ], 201);
+        } catch (\Throwable $e) {
+            DB::rollBack(); // ✅ undo everything
+            Log::error('Checkout failed', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'message' => 'Order failed, please try again',
+            ], 500);
+
+        }
     }
 
     #[OA\Get(

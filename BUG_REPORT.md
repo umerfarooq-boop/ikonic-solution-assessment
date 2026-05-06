@@ -83,3 +83,21 @@ Restricted order access to the authenticated user only.
 
 # add confirm box here add also here try catch for better error
 
+
+
+# Bug #9: Missing Database Transaction in Checkout
+# Category: Backend / Database
+
+# Summary:
+Checkout operations were not wrapped in a transaction, causing partial/inconsistent data if any step failed.
+
+# Fix:
+Wrapped all checkout DB operations inside DB::transaction() to ensure rollback on failure.
+
+
+
+
+# Critical Issue #10 
+
+# not add try catch failuer not erorr handling here
+
