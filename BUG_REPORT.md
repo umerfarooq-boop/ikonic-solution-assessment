@@ -10,4 +10,15 @@ Login/register was failing with 419 CSRF error because statefulApi Sanctum sessi
 Removed statefulApi() from bootstrap/app.php since CSRF/session middleware is not needed for Bearer token auth.
 
 
+# Bug #2: 422 Error Not Shown on Login
+
+# Category: Frontend Error Handling
+# Files: AuthContext.js, Login.js (frontend)
+
+# Summary:
+Login was crashing on 422 (invalid credentials) because errors were not handled properly. The API error was not caught in AuthContext, and the Login page was not displaying any error message to the user.
+
+# Fix:
+Added proper try/catch in both AuthContext login() and Login.js so the error is handled and shown in the UI instead of crashing the app.
+
 

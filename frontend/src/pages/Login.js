@@ -13,9 +13,15 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
+    try{
     const user = await login(email, password);
-    if (user) {
-      navigate('/products');
+      if (user) {
+        navigate('/products');
+      }
+    }
+    catch(error){
+      console.log('handleSubmit error:', error.message);
+      setError(error.message);
     }
   };
 
