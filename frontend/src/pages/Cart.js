@@ -12,7 +12,7 @@ const Cart = () => {
     if (user) {
       fetchCart();
     }
-  }, []);
+}, [user]);
 
   const handleQuantityChange = (itemId, newQuantity) => {
     if (newQuantity < 1) return;

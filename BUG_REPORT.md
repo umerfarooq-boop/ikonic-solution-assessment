@@ -30,3 +30,17 @@ Added proper try/catch in both AuthContext login() and Login.js so the error is 
 Cart items disappeared after refresh because state was only stored in memory and not reloaded from API.
 # Fix:
 Added useEffect to call fetchCart() on app load when token exists, so cart data is restored after refresh.
+
+
+# Bug #5: Cart Not Updating After Login
+
+# Category: Frontend State Issue
+# File: Cart.js
+
+# Summary:
+Cart was not updating after login because fetchCart() only ran once on mount and did not react to user changes.
+# Fix:
+Updated useEffect dependency from [] to [user] so cart reloads when user logs in.
+
+
+
