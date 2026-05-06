@@ -45,8 +45,16 @@ const Products = () => {
       alert('Please login to add items to cart');
       return;
     }
-    addToCart(productId, 1);
-    alert('Added to cart!');
+    const isConfirmed = window.confirm('Do you want to add this product to cart?');
+    if (!isConfirmed) {
+      return;
+    }
+    try {
+      await addToCart(productId, 1);
+    } catch (error) {
+      console.error(error);
+      alert('Failed to add product to cart');
+    }
   };
 
   return (

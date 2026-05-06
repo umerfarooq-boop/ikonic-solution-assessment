@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
 
   const login = async (email, password) => {
+    try{
     const response = await api.post('/login', { email, password });
     const { user: userData, token: authToken } = response.data;
 
@@ -17,6 +18,12 @@ export const AuthProvider = ({ children }) => {
     setToken(authToken);
 
     return userData;
+    }
+    catch(error){
+      console.log('Login error:', error.response?.data);
+      const message = error.response?.data?.message || 'Login failed';
+      throw new Error(message);
+    }
   };
 
   const register = async (name, email, password, password_confirmation) => {

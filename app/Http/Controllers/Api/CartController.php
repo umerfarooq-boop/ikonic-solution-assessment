@@ -79,6 +79,7 @@ class CartController extends Controller
             new OA\Response(response: 422, description: "Validation error"),
         ]
     )]
+
     public function addItem(Request $request)
     {
         $request->validate([

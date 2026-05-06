@@ -17,7 +17,8 @@ const Checkout = () => {
     e.preventDefault();
     setProcessing(true);
 
-    const checkoutResponse = await api.post('/checkout', {
+    try {
+      const checkoutResponse = await api.post('/checkout', {
       shipping_address: shippingAddress,
       billing_address: billingAddress,
       payment_method: paymentMethod,
@@ -31,6 +32,16 @@ const Checkout = () => {
     setOrderComplete(true);
     setProcessing(false);
     clearCart();
+    } catch (error) {
+      console.error(error);
+
+    alert(
+      error?.response?.data?.message ||
+      'Something went wrong during checkout'
+    );
+    }finally {
+      setProcessing(false);
+    }
   };
 
   if (orderComplete && order) {
