@@ -43,4 +43,43 @@ Cart was not updating after login because fetchCart() only ran once on mount and
 Updated useEffect dependency from [] to [user] so cart reloads when user logs in.
 
 
+# Bug #5: Cart Not Updating After Login
+
+# Category: Frontend State Issue
+# File: Cart.js
+
+# Summary:
+Cart was not updating after login because fetchCart() only ran once on mount and did not react to user changes.
+# Fix:
+Updated useEffect dependency from [] to [user] so cart reloads when user logs in.
+
+# Bug #6: Product Stock Not Reduced
+# Category: Backend
+# File: Checkout Controller
+
+# Summary:
+Stock was not decreasing after checkout, allowing unlimited purchases.
+
+# Fix:
+# Decremented product stock during order creation.
+
+# Bug #7: No Stock Validation
+# Category: Backend
+# Summary:
+Users could order more items than available stock.
+# Fix:
+Added stock validation before checkout.
+
+# Bug #8: Missing Payment Authorization
+# Category: Backend Security
+
+# Summary:
+Users could process payment for others' orders.
+
+# Fix:
+Restricted order access to the authenticated user only.
+
+# UI Issue when add product show alert box user not cancel it if cancel refresh the page
+
+# add confirm box here add also here try catch for better error
 
