@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 import api from '../services/api';
 
 const CartContext = createContext(null);
@@ -15,6 +15,14 @@ export const CartProvider = ({ children }) => {
     setCartTotal(response.data.total || 0);
     setLoading(false);
   };
+
+  const token = localStorage.getItem('token');
+  useEffect(() => {
+    console.log('CartContext: checking token on load', token);
+    if (token) {
+      fetchCart();
+    }
+  }, [token]);
 
   const addToCart = async (productId, quantity = 1) => {
     const response = await api.post('/cart/items', {

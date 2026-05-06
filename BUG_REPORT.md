@@ -22,3 +22,11 @@ Login was crashing on 422 (invalid credentials) because errors were not handled 
 Added proper try/catch in both AuthContext login() and Login.js so the error is handled and shown in the UI instead of crashing the app.
 
 
+# Bug #3: Cart Resets on Refresh
+
+# Category: Frontend State Issue
+# File: CartContext.js
+# Summary:
+Cart items disappeared after refresh because state was only stored in memory and not reloaded from API.
+# Fix:
+Added useEffect to call fetchCart() on app load when token exists, so cart data is restored after refresh.
