@@ -7,6 +7,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use OpenApi\Attributes as OA;
 
 class CheckoutController extends Controller
@@ -74,6 +75,9 @@ class CheckoutController extends Controller
                 'quantity' => $cartItem->quantity,
                 'price' => $cartItem->price,
             ]);
+            $cartItem->product->decrement('stock', $cartItem->quantity);
+            Log::info('Stock deducted', ['product_id' => $cartItem->product_id, 'qty' => $cartItem->quantity]);
+            $total = $cart->getTotal();
         }
 
         $cart->status = 'checked_out';
@@ -111,6 +115,12 @@ class CheckoutController extends Controller
     )]
     public function paymentProcess(Request $request, $orderId)
     {
+        $order = Order::where('id', $orderId)
+        ->where('user_id', $request->user()->id)
+        ->firstOrFail();
+
+        Log::info('Payment process started', ['order_id' => $orderId, 'user_id' => $request->user()->id]);
+
         $order = Order::findOrFail($orderId);
 
         $paymentSuccess = rand(0, 10) > 2;
